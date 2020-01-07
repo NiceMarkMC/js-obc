@@ -9,11 +9,11 @@ let $ = qs => document.querySelector(qs);
 
 let generate = () => {
 	var commands = $('#code').value.split('\n');
-	commands.push('setblock ~ ~ ~1 command_block 0 0 {Command:"fill ~ ~-3 ~-1 ~ ~ ~ air"}');
+	commands.push('setblock ~ ~ ~1 command_block{Command:"fill ~ ~-1 ~-1 ~ ~ ~ air"} replace');
 	commands.push('setblock ~ ~-1 ~1 redstone_block');
-	commands.push('kill @e[type=commandblock_minecart,r=1]');
-	commands = commands.map(str => `{id:commandblock_minecart,Command:"${str.replace(/\\/g,'\\\\').replace(/"/g,'\\\"')}"}`);
-	$('#result').value = `summon falling_block ~ ~1 ~ {Block:stone,Time:1,Passengers:[{id:falling_block,Block:redstone_block,Time:1,Passengers:[{id:falling_block,Block:activator_rail,Time:1,Passengers:[${commands.join(',')}]}]}]}`;
+	commands.push('kill @e[type=command_block_minecart,distance=0..2]');
+	commands = commands.map(str => `{id:command_block_minecart,Command:"${str.replace(/\\/g,'\\\\').replace(/"/g,'\\\"')}"}`);
+	$('#result').value = `summon falling_block ~ ~1 ~ {BlockState:{Name:activator_rail},Time:1,Passengers:[${commands.join(',')}]}`;
 }
 
 window.commands = {
